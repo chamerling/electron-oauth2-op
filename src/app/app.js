@@ -3,8 +3,15 @@
 import {ipcRenderer} from 'electron';
 import * as axios from 'axios';
 
+import Vue from 'vue'
+import App from './App.vue'
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+
 ipcRenderer.on('openpaas-oauth-reply', (event, arg) => {
-  document.getElementById('login').hidden = true;
   const client = axios.create({
     baseURL: 'http://localhost:8080/api/',
     headers: {'Authorization': 'Bearer ' + arg.access_token},
