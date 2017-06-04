@@ -13,7 +13,7 @@
       }
     },
     methods: {
-      login: function(event) {
+      login: () => {
         ipcRenderer.send('openpaas-oauth', 'getToken');
       }
     }

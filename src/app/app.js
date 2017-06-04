@@ -3,11 +3,22 @@
 import {ipcRenderer} from 'electron';
 import * as axios from 'axios';
 
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import routes from './routes';
+import App from './components/App.vue'
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+  mode: 'hash',
+  routes,
+  base: __dirname
+});
 
 new Vue({
   el: '#app',
+  router,
   render: h => h(App)
 });
 
@@ -19,12 +30,8 @@ ipcRenderer.on('openpaas-oauth-reply', (event, arg) => {
   });
 
   client.get('/user').then(response => {
-    document.getElementById('hello').innerText = `Hello ${response.data.preferredEmail}`;
+    console.log(response.data.preferredEmail);
   }, err => {
     console.log(err);
   });
 });
-
-function login() {
-  ipcRenderer.send('openpaas-oauth', 'getToken')
-}
