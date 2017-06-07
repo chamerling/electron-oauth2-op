@@ -1,12 +1,13 @@
 'use strict';
 
-import {ipcRenderer} from 'electron';
-import * as axios from 'axios';
-
+//import {ipcRenderer} from 'electron';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
-import App from './components/App.vue'
+import App from './components/App.vue';
+import * as types from './store/mutation-types';
+import store from './store';
+import {init as initAuth} from './auth';
 
 Vue.use(VueRouter);
 
@@ -16,22 +17,11 @@ const router = new VueRouter({
   base: __dirname
 });
 
-new Vue({
+const app = new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });
 
-ipcRenderer.on('openpaas-oauth-reply', (event, arg) => {
-  const client = axios.create({
-    baseURL: 'http://localhost:8080/api/',
-    headers: {'Authorization': 'Bearer ' + arg.access_token},
-    responseType: 'json'
-  });
-
-  client.get('/user').then(response => {
-    console.log(response.data.preferredEmail);
-  }, err => {
-    console.log(err);
-  });
-});
+initAuth(store);

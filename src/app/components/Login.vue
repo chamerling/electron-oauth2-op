@@ -4,8 +4,6 @@
 </template>
 
 <script>
-  import {ipcRenderer} from 'electron';
-
   export default {
     data() {
       return {
@@ -13,8 +11,8 @@
       }
     },
     methods: {
-      login: () => {
-        ipcRenderer.send('openpaas-oauth', 'getToken');
+      login() {
+        this.$store.dispatch('getToken');
       }
     }
   }
