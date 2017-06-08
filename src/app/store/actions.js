@@ -2,25 +2,32 @@ import * as types from './mutation-types'
 import * as axios from 'axios';
 import {ipcRenderer} from 'electron';
 
-export const getToken = ({commit, state}) => {
-  ipcRenderer.send('openpaas-oauth', 'getToken');
-};
-
-export const logout = ({commit, state}) => {
-  window.localStorage.removeItem('access_token');
-};
-
-export const getUser = ({ commit, state }) => {
-  const client = axios.create({
+const getAxiosClient = (state) => {
+  return axios.create({
     baseURL: `${state.server.url}/api/`,
     headers: {'Authorization': 'Bearer ' + state.session.access_token},
     responseType: 'json'
   });
+}
 
+export const getToken = ({commit}) => {
+  ipcRenderer.send('openpaas-oauth', 'getToken');
+};
+
+export const logout = ({commit}) => {
+  return new Promise(resolve => {
+    commit(types.REMOVE_ACCESS_TOKEN);
+    commit(types.INIT_SESSION);
+    commit(types.REMOVE_USER);
+    resolve();
+  });
+};
+
+export const getUser = ({ commit, state }) => {
   return new Promise((resolve, reject) => {
-    client.get('/user').then(response => {
+    getAxiosClient(state).get('/user').then(response => {
       commit(types.SET_USER, response.data);
-      resolve();
+      resolve(response.data);
     }, err => {
       console.log(err);
       reject(err);

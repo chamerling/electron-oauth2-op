@@ -1,17 +1,16 @@
 <template lang="jade">
   div
-    router-link(v-if='!isAuthenticated', to="login") Login
-    router-link(v-else, to="logout") Logout
+    app-header
     router-view
 </template>
 
-<script>  
+<script>
+  import Header from './Header.vue';
+
   export default {
     name: 'app',
-    computed: {
-      isAuthenticated() {
-        return this.$store.getters.isAuthenticated;
-      }
+    components: {
+      'app-header': Header
     }
   }
 </script>

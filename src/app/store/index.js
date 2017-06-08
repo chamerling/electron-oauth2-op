@@ -7,18 +7,24 @@ import * as types from './mutation-types';
 import plugins from './plugins';
 import mutations from './mutations';
 
+const state = {
+  server: {
+    url: 'http://localhost:8080'
+  },
+  session: {
+    access_token: window.localStorage.getItem('access_token'),
+    ready: false,
+    authenticated: false,
+    user: {}
+  }
+};
+
+mutations[types.INIT_SESSION](state);
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    server: {
-      url: 'http://localhost:8080'
-    },
-    session: {
-      access_token: window.localStorage.getItem('access_token'),
-      user: {}
-    },
-  },
+  state,
   actions,
   getters,
   mutations,

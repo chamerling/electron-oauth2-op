@@ -2,11 +2,14 @@
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueMaterial from 'vue-material';
+
 import routes from './routes';
 import App from './components/App.vue';
 import store from './store';
 import {init as initAuth} from './auth';
 
+Vue.use(VueMaterial);
 Vue.use(VueRouter);
 
 const router = new VueRouter({

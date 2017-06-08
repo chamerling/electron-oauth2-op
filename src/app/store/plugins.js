@@ -4,6 +4,8 @@ const localStoragePlugin = store => {
   store.subscribe((mutation, { session }) => {
     if (session.access_token) {
       window.localStorage.setItem('access_token', session.access_token);
+    } else {
+      window.localStorage.removeItem('access_token');
     }
   })
 }
