@@ -6,6 +6,10 @@ export const getToken = ({commit, state}) => {
   ipcRenderer.send('openpaas-oauth', 'getToken');
 };
 
+export const logout = ({commit, state}) => {
+  window.localStorage.removeItem('access_token');
+};
+
 export const getUser = ({ commit, state }) => {
   const client = axios.create({
     baseURL: `${state.server.url}/api/`,

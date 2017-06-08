@@ -1,13 +1,17 @@
 <template lang="jade">
   div
-    router-link(to="login") Login
+    router-link(v-if='!isAuthenticated', to="login") Login
+    router-link(v-else, to="logout") Logout
     router-view
 </template>
 
-<script>
+<script>  
   export default {
-    data() {
-      return {};
+    name: 'app',
+    computed: {
+      isAuthenticated() {
+        return this.$store.getters.isAuthenticated;
+      }
     }
   }
 </script>

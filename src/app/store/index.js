@@ -1,14 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createLogger from 'vuex/dist/logger';
 
 import * as actions from './actions';
+import * as getters from './getters';
 import * as types from './mutation-types';
+import plugins from './plugins';
 import mutations from './mutations';
 
 Vue.use(Vuex);
-
-const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
   state: {
@@ -16,12 +15,13 @@ export default new Vuex.Store({
       url: 'http://localhost:8080'
     },
     session: {
-      access_token: false,
+      access_token: window.localStorage.getItem('access_token'),
       user: {}
     },
   },
   actions,
+  getters,
   mutations,
-  strict: debug,
-  plugins: debug ? [createLogger()] : []
+  plugins,
+  strict: process.env.NODE_ENV !== 'production'
 })
