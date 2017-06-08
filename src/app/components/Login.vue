@@ -1,14 +1,23 @@
 <template lang="jade">
   .login
     // @click.native instead of v-on:click -> https://github.com/vuematerial/vue-material/issues/630 😞
-    md-button.md-raised.md-primary(@click.native="login") Login
+    md-button.md-raised.md-primary(v-if="!authorizing", @click.native="login") Login
+    .authorizing(v-else)
+      h2 Please follow instructions...
+      md-spinner(md-indeterminate)
 </template>
 
 <script>
   export default {
     name: 'login',
+    data() {
+      return {
+        authorizing: false
+      };
+    },
     methods: {
       login() {
+        this.authorizing = true;
         this.$store.dispatch('getToken').then(res => {
           this.$store.getters.onAuthenticated.then(this.onSuccess);
         }, err => {
@@ -17,6 +26,7 @@
       },
 
       onSuccess() {
+        this.authorizing = false;
         this.$router.push({name: 'home'});
       }
     }
@@ -29,5 +39,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .authorizing {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    } 
   }
 </style>
