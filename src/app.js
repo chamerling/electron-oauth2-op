@@ -32,7 +32,6 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
-    titleBarStyle: 'hidden',
     movable: true,
     width: 580,
     height: 365
